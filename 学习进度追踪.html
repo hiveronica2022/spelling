@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7岁儿童英语单词学习进度追踪</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 0.9em;
+        }
+
+        .progress-overview {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 30px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .progress-overview {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+                padding: 30px;
+            }
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        @media (min-width: 768px) {
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-card h3 {
+                font-size: 2em;
+            }
+
+            .stat-card p {
+                font-size: 0.9em;
+            }
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            padding: 0 10px;
+            border-bottom: 2px solid #e0e0e0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab {
+            padding: 12px 15px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 0.9em;
+            color: #666;
+            transition: all 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (min-width: 768px) {
+            .tabs {
+                padding: 0 30px;
+            }
+
+            .tab {
+                padding: 15px 25px;
+                font-size: 1em;
+            }
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            font-weight: bold;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .content {
+            padding: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .content {
+                padding: 30px;
+            }
+        }
+
+        .week-section {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .week-section.active {
+            display: block;
+        }
+
+        .week-section h2 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .week-section h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .day-card:active {
+            background: #f0f1f3;
+        }
+
+        @media (min-width: 768px) {
+            .day-card {
+                padding: 20px;
+            }
+
+            .day-card:hover {
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                transform: translateX(5px);
+            }
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .day-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        @media (min-width: 768px) {
+            .day-title {
+                font-size: 1.2em;
+            }
+        }
+
+        .day-status {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        @media (min-width: 768px) {
+            .status-btn {
+                padding: 5px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        .status-btn.completed {
+            background: #4caf50;
+            color: white;
+        }
+
+        .status-btn.in-progress {
+            background: #ff9800;
+            color: white;
+        }
+
+        .status-btn.pending {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .word-item {
+            background: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            font-size: 1em;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .word-item:active {
+            transform: scale(0.95);
+        }
+
+        @media (min-width: 768px) {
+            .word-list {
+                gap: 10px;
+            }
+
+            .word-item {
+                padding: 8px 15px;
+            }
+
+            .word-item:hover {
+                border-color: #667eea;
+                transform: scale(1.05);
+            }
+        }
+
+        .word-item.mastered {
+            background: #c8e6c9;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .notes-area {
+            margin-top: 15px;
+        }
+
+        .notes-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            resize: vertical;
+            font-family: inherit;
+            -webkit-appearance: none;
+        }
+
+        @media (min-width: 768px) {
+            .notes-input {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+        }
+
+        .save-btn {
+            margin-top: 10px;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .save-btn:active {
+            background: #5568d3;
+            transform: scale(0.98);
+        }
+
+        @media (min-width: 768px) {
+            .save-btn {
+                width: auto;
+                padding: 8px 20px;
+            }
+
+            .save-btn:hover {
+                background: #5568d3;
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        @media (min-width: 768px) {
+            .progress-bar {
+                height: 30px;
+                margin: 20px 0;
+            }
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+
+        @media (min-width: 768px) {
+            .progress-fill {
+                font-size: 1em;
+            }
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #ffd700;
+            color: #333;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+
+        /* 移动端优化：防止双击缩放 */
+        button, .word-item, .status-btn {
+            touch-action: manipulation;
+        }
+
+        /* 移动端优化：滚动优化 */
+        .tabs {
+            scrollbar-width: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 移动端优化：输入框优化 */
+        input, textarea {
+            font-size: 16px; /* 防止iOS自动缩放 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 英语单词学习进度追踪 🌟</h1>
+            <p>两个月掌握400-500个核心单词</p>
+        </div>
+
+        <div class="progress-overview">
+            <div class="stat-card">
+                <h3 id="totalDays">0</h3>
+                <p>已学习天数</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalWords">0</h3>
+                <p>已掌握单词</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="accuracy">0%</h3>
+                <p>平均正确率</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="streak">0</h3>
+                <p>连续学习天数</p>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="overallProgress" style="width: 0%">0%</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showWeek(1)">Week 1-2</button>
+            <button class="tab" onclick="showWeek(2)">Week 3-4</button>
+            <button class="tab" onclick="showWeek(3)">Week 5-6</button>
+            <button class="tab" onclick="showWeek(4)">Week 7-8</button>
+        </div>
+
+        <div class="content">
+            <!-- Week 1-2 -->
+            <div id="week1" class="week-section active">
+                <h2>📅 第一阶段：Week 1-2（自然拼读基础）</h2>
+                <p style="color: #666; margin: 10px 0;">目标：掌握80-100个长元音单词</p>
+
+                <div class="day-card" data-day="1">
+                    <div class="day-header">
+                        <div class="day-title">Day 1-2: a_e单词</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">bake</span>
+                        <span class="word-item" onclick="toggleWord(this)">cake</span>
+                        <span class="word-item" onclick="toggleWord(this)">came</span>
+                        <span class="word-item" onclick="toggleWord(this)">cane</span>
+                        <span class="word-item" onclick="toggleWord(this)">cape</span>
+                        <span class="word-item" onclick="toggleWord(this)">case</span>
+                        <span class="word-item" onclick="toggleWord(this)">date</span>
+                        <span class="word-item" onclick="toggleWord(this)">face</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记、孩子表现、需要加强的地方..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="2">
+                    <div class="day-header">
+                        <div class="day-title">Day 3-4: a_e单词（续）</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">gate</span>
+                        <span class="word-item" onclick="toggleWord(this)">lake</span>
+                        <span class="word-item" onclick="toggleWord(this)">made</span>
+                        <span class="word-item" onclick="toggleWord(this)">make</span>
+                        <span class="word-item" onclick="toggleWord(this)">name</span>
+                        <span class="word-item" onclick="toggleWord(this)">page</span>
+                        <span class="word-item" onclick="toggleWord(this)">safe</span>
+                        <span class="word-item" onclick="toggleWord(this)">take</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="3">
+                    <div class="day-header">
+                        <div class="day-title">Day 5-6: i_e单词</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">bike</span>
+                        <span class="word-item" onclick="toggleWord(this)">bite</span>
+                        <span class="word-item" onclick="toggleWord(this)">dice</span>
+                        <span class="word-item" onclick="toggleWord(this)">dime</span>
+                        <span class="word-item" onclick="toggleWord(this)">dive</span>
+                        <span class="word-item" onclick="toggleWord(this)">file</span>
+                        <span class="word-item" onclick="toggleWord(this)">fine</span>
+                        <span class="word-item" onclick="toggleWord(this)">fire</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="4">
+                    <div class="day-header">
+                        <div class="day-title">Day 7: 复习周 + 小测试</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <p style="margin: 10px 0; color: #666;">测试Day 1-6所有单词，记录正确率</p>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="测试结果：正确率___%，错误单词：___" rows="3"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存测试结果</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="5">
+                    <div class="day-header">
+                        <div class="day-title">Day 8-9: i_e单词（续）</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">five</span>
+                        <span class="word-item" onclick="toggleWord(this)">hide</span>
+                        <span class="word-item" onclick="toggleWord(this)">hike</span>
+                        <span class="word-item" onclick="toggleWord(this)">kite</span>
+                        <span class="word-item" onclick="toggleWord(this)">like</span>
+                        <span class="word-item" onclick="toggleWord(this)">life</span>
+                        <span class="word-item" onclick="toggleWord(this)">line</span>
+                        <span class="word-item" onclick="toggleWord(this)">mice</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="6">
+                    <div class="day-header">
+                        <div class="day-title">Day 10-11: o_e单词</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">bone</span>
+                        <span class="word-item" onclick="toggleWord(this)">code</span>
+                        <span class="word-item" onclick="toggleWord(this)">cone</span>
+                        <span class="word-item" onclick="toggleWord(this)">dome</span>
+                        <span class="word-item" onclick="toggleWord(this)">home</span>
+                        <span class="word-item" onclick="toggleWord(this)">hope</span>
+                        <span class="word-item" onclick="toggleWord(this)">joke</span>
+                        <span class="word-item" onclick="toggleWord(this)">nose</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="7">
+                    <div class="day-header">
+                        <div class="day-title">Day 12-13: o_e单词（续）</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">note</span>
+                        <span class="word-item" onclick="toggleWord(this)">pole</span>
+                        <span class="word-item" onclick="toggleWord(this)">rope</span>
+                        <span class="word-item" onclick="toggleWord(this)">rose</span>
+                        <span class="word-item" onclick="toggleWord(this)">tone</span>
+                        <span class="word-item" onclick="toggleWord(this)">vote</span>
+                        <span class="word-item" onclick="toggleWord(this)">woke</span>
+                        <span class="word-item" onclick="toggleWord(this)">zone</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="8">
+                    <div class="day-header">
+                        <div class="day-title">Day 14: 阶段测试</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <p style="margin: 10px 0; color: #666;">测试Week 1-2所有单词（约80个），目标正确率70%以上</p>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="测试结果：正确率___%，总计___/80个，需要加强的单词：___" rows="3"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存测试结果</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 3-4 -->
+            <div id="week2" class="week-section">
+                <h2>📅 第二阶段：Week 3-4（扩展长元音+高频词）</h2>
+                <p style="color: #666; margin: 10px 0;">目标：掌握100个单词（u_e, e_e + sight words）</p>
+
+                <div class="day-card" data-day="9">
+                    <div class="day-header">
+                        <div class="day-title">Day 15-16: u_e单词</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">cube</span>
+                        <span class="word-item" onclick="toggleWord(this)">cute</span>
+                        <span class="word-item" onclick="toggleWord(this)">dude</span>
+                        <span class="word-item" onclick="toggleWord(this)">duke</span>
+                        <span class="word-item" onclick="toggleWord(this)">fuse</span>
+                        <span class="word-item" onclick="toggleWord(this)">huge</span>
+                        <span class="word-item" onclick="toggleWord(this)">June</span>
+                        <span class="word-item" onclick="toggleWord(this)">mule</span>
+                        <span class="word-item" onclick="toggleWord(this)">mute</span>
+                        <span class="word-item" onclick="toggleWord(this)">rude</span>
+                        <span class="word-item" onclick="toggleWord(this)">rule</span>
+                        <span class="word-item" onclick="toggleWord(this)">tube</span>
+                        <span class="word-item" onclick="toggleWord(this)">tune</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="10">
+                    <div class="day-header">
+                        <div class="day-title">Day 17-18: e_e + ie单词</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">here</span>
+                        <span class="word-item" onclick="toggleWord(this)">these</span>
+                        <span class="word-item" onclick="toggleWord(this)">theme</span>
+                        <span class="word-item" onclick="toggleWord(this)">gene</span>
+                        <span class="word-item" onclick="toggleWord(this)">field</span>
+                        <span class="word-item" onclick="toggleWord(this)">thief</span>
+                        <span class="word-item" onclick="toggleWord(this)">chief</span>
+                        <span class="word-item" onclick="toggleWord(this)">piece</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="11">
+                    <div class="day-header">
+                        <div class="day-title">Day 19-20: Sight Words - Pre-Primer</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <div class="word-list">
+                        <span class="word-item" onclick="toggleWord(this)">the</span>
+                        <span class="word-item" onclick="toggleWord(this)">to</span>
+                        <span class="word-item" onclick="toggleWord(this)">and</span>
+                        <span class="word-item" onclick="toggleWord(this)">a</span>
+                        <span class="word-item" onclick="toggleWord(this)">I</span>
+                        <span class="word-item" onclick="toggleWord(this)">you</span>
+                        <span class="word-item" onclick="toggleWord(this)">it</span>
+                        <span class="word-item" onclick="toggleWord(this)">in</span>
+                        <span class="word-item" onclick="toggleWord(this)">said</span>
+                        <span class="word-item" onclick="toggleWord(this)">for</span>
+                        <span class="word-item" onclick="toggleWord(this)">up</span>
+                        <span class="word-item" onclick="toggleWord(this)">look</span>
+                        <span class="word-item" onclick="toggleWord(this)">is</span>
+                        <span class="word-item" onclick="toggleWord(this)">go</span>
+                        <span class="word-item" onclick="toggleWord(this)">we</span>
+                        <span class="word-item" onclick="toggleWord(this)">can</span>
+                        <span class="word-item" onclick="toggleWord(this)">see</span>
+                        <span class="word-item" onclick="toggleWord(this)">not</span>
+                        <span class="word-item" onclick="toggleWord(this)">he</span>
+                        <span class="word-item" onclick="toggleWord(this)">was</span>
+                    </div>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+
+                <div class="day-card" data-day="12">
+                    <div class="day-header">
+                        <div class="day-title">Day 21: 复习周 + 小测试</div>
+                        <div class="day-status">
+                            <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
+                        </div>
+                    </div>
+                    <p style="margin: 10px 0; color: #666;">测试Day 15-20所有单词</p>
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="测试结果..." rows="3"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存测试结果</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 5-6 -->
+            <div id="week3" class="week-section">
+                <h2>📅 第三阶段：Week 5-6（混合拼读+一年级高频词）</h2>
+                <p style="color: #666; margin: 10px 0;">目标：掌握120个单词（辅音组合 + First Grade sight words）</p>
+                <p style="color: #999; font-style: italic;">详细内容请参考学习计划文档</p>
+            </div>
+
+            <!-- Week 7-8 -->
+            <div id="week4" class="week-section">
+                <h2>📅 第四阶段：Week 7-8（综合巩固+冲刺）</h2>
+                <p style="color: #666; margin: 10px 0;">目标：巩固所有单词 + Second Grade高频词</p>
+                <p style="color: #999; font-style: italic;">详细内容请参考学习计划文档</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 从localStorage加载数据
+        function loadProgress() {
+            const saved = localStorage.getItem('wordProgress');
+            if (saved) {
+                const data = JSON.parse(saved);
+
+                // 恢复单词状态
+                document.querySelectorAll('.word-item').forEach(word => {
+                    const text = word.textContent;
+                    if (data.masteredWords && data.masteredWords.includes(text)) {
+                        word.classList.add('mastered');
+                    }
+                });
+
+                // 恢复天数状态
+                document.querySelectorAll('.day-card').forEach(card => {
+                    const day = card.dataset.day;
+                    if (data.dayStatus && data.dayStatus[day]) {
+                        const btn = card.querySelector('.status-btn');
+                        btn.className = 'status-btn ' + data.dayStatus[day];
+                        btn.textContent = getStatusText(data.dayStatus[day]);
+                    }
+                });
+
+                // 恢复笔记
+                document.querySelectorAll('.day-card').forEach(card => {
+                    const day = card.dataset.day;
+                    if (data.notes && data.notes[day]) {
+                        card.querySelector('.notes-input').value = data.notes[day];
+                    }
+                });
+
+                updateStats();
+            }
+        }
+
+        // 保存进度到localStorage
+        function saveProgress() {
+            const data = {
+                masteredWords: [],
+                dayStatus: {},
+                notes: {}
+            };
+
+            // 保存单词状态
+            document.querySelectorAll('.word-item.mastered').forEach(word => {
+                data.masteredWords.push(word.textContent);
+            });
+
+            // 保存天数状态
+            document.querySelectorAll('.day-card').forEach(card => {
+                const day = card.dataset.day;
+                const btn = card.querySelector('.status-btn');
+                const status = btn.classList.contains('completed') ? 'completed' :
+                              btn.classList.contains('in-progress') ? 'in-progress' : 'pending';
+                data.dayStatus[day] = status;
+
+                // 保存笔记
+                const note = card.querySelector('.notes-input').value;
+                if (note) {
+                    data.notes[day] = note;
+                }
+            });
+
+            localStorage.setItem('wordProgress', JSON.stringify(data));
+        }
+
+        // 切换单词掌握状态
+        function toggleWord(element) {
+            element.classList.toggle('mastered');
+            saveProgress();
+            updateStats();
+        }
+
+        // 切换学习状态
+        function toggleStatus(button) {
+            if (button.classList.contains('pending')) {
+                button.className = 'status-btn in-progress';
+                button.textContent = '学习中';
+            } else if (button.classList.contains('in-progress')) {
+                button.className = 'status-btn completed';
+                button.textContent = '已完成';
+            } else {
+                button.className = 'status-btn pending';
+                button.textContent = '未开始';
+            }
+            saveProgress();
+            updateStats();
+        }
+
+        function getStatusText(status) {
+            return status === 'completed' ? '已完成' :
+                   status === 'in-progress' ? '学习中' : '未开始';
+        }
+
+        // 保存笔记
+        function saveNotes(button) {
+            saveProgress();
+            button.textContent = '已保存 ✓';
+            setTimeout(() => {
+                button.textContent = '保存笔记';
+            }, 2000);
+        }
+
+        // 切换周显示
+        function showWeek(weekNum) {
+            document.querySelectorAll('.week-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById('week' + weekNum).classList.add('active');
+            document.querySelectorAll('.tab')[weekNum - 1].classList.add('active');
+        }
+
+        // 更新统计数据
+        function updateStats() {
+            const completedDays = document.querySelectorAll('.status-btn.completed').length;
+            const masteredWords = document.querySelectorAll('.word-item.mastered').length;
+            const totalWords = document.querySelectorAll('.word-item').length;
+            const progress = totalWords > 0 ? Math.round((masteredWords / totalWords) * 100) : 0;
+
+            document.getElementById('totalDays').textContent = completedDays;
+            document.getElementById('totalWords').textContent = masteredWords;
+            document.getElementById('overallProgress').style.width = progress + '%';
+            document.getElementById('overallProgress').textContent = progress + '%';
+
+            // 计算连续学习天数（简化版）
+            let streak = 0;
+            document.querySelectorAll('.day-card').forEach(card => {
+                const btn = card.querySelector('.status-btn');
+                if (btn.classList.contains('completed')) {
+                    streak++;
+                }
+            });
+            document.getElementById('streak').textContent = streak;
+        }
+
+        // 页面加载时初始化
+        window.onload = function() {
+            loadProgress();
+            updateStats();
+        };
+    </script>
+</body>
+</html>

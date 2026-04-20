@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>访问学习进度追踪</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .link {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .link:active {
+            background: #5568d3;
+        }
+        .tip {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        .qr {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            background: white;
+            border: 2px dashed #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🌟 英语单词学习进度追踪</h1>
+
+        <a href="学习进度追踪.html" class="link">点击进入</a>
+
+        <div class="tip">
+            💡 <strong>使用提示：</strong><br>
+            1. 点击上方按钮进入学习页面<br>
+            2. 建议添加到手机桌面，方便使用<br>
+            3. 所有数据自动保存在手机本地
+        </div>
+
+        <div class="tip" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+            <strong>📱 如何添加到桌面：</strong><br>
+            <strong>iPhone:</strong> Safari浏览器 → 分享 → 添加到主屏幕<br>
+            <strong>Android:</strong> Chrome浏览器 → 菜单 → 添加到主屏幕
+        </div>
+    </div>
+
+    <script>
+        // 自动检测并显示当前访问地址
+        window.onload = function() {
+            const url = window.location.href.replace('index.html', '学习进度追踪.html');
+            console.log('学习页面地址:', url);
+        };
+    </script>
+</body>
+</html>
