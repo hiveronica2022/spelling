@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>生成图标</title>
+</head>
+<body>
+    <h2>生成iPhone图标</h2>
+    <p>右键点击下面的图标 → "图片另存为" → 保存为 icon.png</p>
+    <canvas id="canvas" width="180" height="180" style="border: 1px solid #ccc;"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 创建渐变背景
+        const gradient = ctx.createLinearGradient(0, 0, 180, 180);
+        gradient.addColorStop(0, '#667eea');
+        gradient.addColorStop(1, '#764ba2');
+
+        // 绘制圆角矩形背景
+        ctx.fillStyle = gradient;
+        roundRect(ctx, 0, 0, 180, 180, 40);
+        ctx.fill();
+
+        // 绘制书本
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        roundRect(ctx, 50, 65, 80, 70, 4);
+        ctx.fill();
+
+        // 绘制书脊
+        ctx.fillStyle = 'rgba(102, 126, 234, 0.3)';
+        ctx.fillRect(85, 65, 10, 70);
+
+        // 绘制字母A
+        ctx.fillStyle = '#667eea';
+        ctx.font = 'bold 28px Arial';
+        ctx.fillText('A', 70, 110);
+
+        // 绘制字母B
+        ctx.fillStyle = '#764ba2';
+        ctx.fillText('B', 95, 110);
+
+        // 绘制星星
+        ctx.fillStyle = '#ffd700';
+        ctx.beginPath();
+        ctx.arc(60, 75, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(115, 80, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 绘制底部文字
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('单词学习', 90, 155);
+
+        // 圆角矩形函数
+        function roundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        // 自动下载
+        setTimeout(() => {
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'icon.png';
+                a.click();
+            });
+        }, 500);
+    </script>
+</body>
+</html>

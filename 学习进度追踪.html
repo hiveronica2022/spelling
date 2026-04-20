@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7岁儿童英语单词学习进度追踪</title>
+    <title>英语单词学习</title>
+
+    <!-- iOS主屏幕图标 -->
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+
+    <!-- iOS主屏幕标题 -->
+    <meta name="apple-mobile-web-app-title" content="单词学习">
+
+    <!-- iOS全屏模式 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- 通用图标 -->
+    <link rel="icon" type="image/png" href="icon.png">
     <style>
         * {
             margin: 0;
@@ -286,6 +300,129 @@
             touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
+            position: relative;
+        }
+
+        .word-item:active {
+            transform: scale(0.95);
+        }
+
+        @media (min-width: 768px) {
+            .word-list {
+                gap: 10px;
+            }
+
+            .word-item {
+                padding: 8px 15px;
+            }
+
+            .word-item:hover {
+                border-color: #667eea;
+                transform: scale(1.05);
+            }
+        }
+
+        .word-item.mastered {
+            background: #c8e6c9;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .word-item.difficult {
+            background: #ffcdd2;
+            border-color: #f44336;
+        }
+
+        .word-item.difficult::after {
+            content: '❗';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.8em;
+        }
+
+        /* 句子区域 */
+        .sentences-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .sentences-section h4 {
+            color: #4caf50;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .sentence-item {
+            padding: 10px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .sentence-item .cn {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* 错词本 */
+        .difficult-words-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3e0;
+            border-radius: 8px;
+            border-left: 4px solid #ff9800;
+        }
+
+        .difficult-words-section h4 {
+            color: #ff9800;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .action-btn.mark-difficult {
+            background: #ff9800;
+            color: white;
+        }
+
+        .action-btn.mark-difficult:active {
+            background: #f57c00;
+        }
+
+        .action-btn.clear-difficult {
+            background: #4caf50;
+            color: white;
+        }
+
+        .action-btn.clear-difficult:active {
+            background: #388e3c;
+        }
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .word-item:active {
@@ -460,6 +597,19 @@
             <div class="progress-fill" id="overallProgress" style="width: 0%">0%</div>
         </div>
 
+        <!-- 错词本汇总 -->
+        <div style="padding: 15px; background: #fff3e0; margin: 0;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <h3 style="color: #ff9800; margin-bottom: 10px; font-size: 1.1em;">📚 错词本（需要加强的单词）</h3>
+                <div id="difficultWordsSummary" style="display: flex; flex-wrap: wrap; gap: 8px; min-height: 40px;">
+                    <span style="color: #999; font-size: 0.9em;">暂无标记的难词，点击下方"标记难词"按钮添加</span>
+                </div>
+                <div style="margin-top: 10px; font-size: 0.85em; color: #666;">
+                    💡 提示：每天学习后，点击"标记难词"按钮，未掌握的单词会自动添加到错词本，每周复习时重点练习
+                </div>
+            </div>
+        </div>
+
         <div class="tabs">
             <button class="tab active" onclick="showWeek(1)">Week 1-2</button>
             <button class="tab" onclick="showWeek(2)">Week 3-4</button>
@@ -490,6 +640,26 @@
                         <span class="word-item" onclick="toggleWord(this)">date</span>
                         <span class="word-item" onclick="toggleWord(this)">face</span>
                     </div>
+
+                    <!-- 造句区域 -->
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div>I will <strong>bake</strong> a <strong>cake</strong> for my mom.</div>
+                            <div class="cn">我会为妈妈烤一个蛋糕。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div>She <strong>came</strong> to my house with a red <strong>cape</strong>.</div>
+                            <div class="cn">她穿着红色斗篷来到我家。</div>
+                        </div>
+                    </div>
+
+                    <!-- 错词本 -->
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="记录学习笔记、孩子表现、需要加强的地方..." rows="2"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
@@ -513,6 +683,24 @@
                         <span class="word-item" onclick="toggleWord(this)">safe</span>
                         <span class="word-item" onclick="toggleWord(this)">take</span>
                     </div>
+
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div>We <strong>made</strong> a boat by the <strong>lake</strong>.</div>
+                            <div class="cn">我们在湖边做了一艘船。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div>Please write your <strong>name</strong> on this <strong>page</strong>.</div>
+                            <div class="cn">请在这一页上写下你的名字。</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
@@ -536,6 +724,24 @@
                         <span class="word-item" onclick="toggleWord(this)">fine</span>
                         <span class="word-item" onclick="toggleWord(this)">fire</span>
                     </div>
+
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div>I ride my <strong>bike</strong> to school every day.</div>
+                            <div class="cn">我每天骑自行车上学。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div>The weather is <strong>fine</strong>, let's <strong>dive</strong> in the pool.</div>
+                            <div class="cn">天气很好，我们去游泳池跳水吧。</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
@@ -573,6 +779,24 @@
                         <span class="word-item" onclick="toggleWord(this)">line</span>
                         <span class="word-item" onclick="toggleWord(this)">mice</span>
                     </div>
+
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div>I <strong>like</strong> to fly a <strong>kite</strong> with my friends.</div>
+                            <div class="cn">我喜欢和朋友们一起放风筝。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div>There are <strong>five</strong> little <strong>mice</strong> in the house.</div>
+                            <div class="cn">房子里有五只小老鼠。</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
@@ -591,6 +815,34 @@
                         <span class="word-item" onclick="toggleWord(this)">code</span>
                         <span class="word-item" onclick="toggleWord(this)">cone</span>
                         <span class="word-item" onclick="toggleWord(this)">dome</span>
+                        <span class="word-item" onclick="toggleWord(this)">home</span>
+                        <span class="word-item" onclick="toggleWord(this)">hope</span>
+                        <span class="word-item" onclick="toggleWord(this)">joke</span>
+                        <span class="word-item" onclick="toggleWord(this)">nose</span>
+                    </div>
+
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div>I <strong>hope</strong> to go <strong>home</strong> soon.</div>
+                            <div class="cn">我希望很快回家。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div>The dog has a big <strong>bone</strong> and a red <strong>nose</strong>.</div>
+                            <div class="cn">这只狗有一根大骨头和一个红鼻子。</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
                         <span class="word-item" onclick="toggleWord(this)">home</span>
                         <span class="word-item" onclick="toggleWord(this)">hope</span>
                         <span class="word-item" onclick="toggleWord(this)">joke</span>
@@ -619,6 +871,24 @@
                         <span class="word-item" onclick="toggleWord(this)">woke</span>
                         <span class="word-item" onclick="toggleWord(this)">zone</span>
                     </div>
+
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div>I <strong>woke</strong> up and wrote a <strong>note</strong>.</div>
+                            <div class="cn">我醒来后写了一张便条。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div>The red <strong>rose</strong> is on the <strong>pole</strong>.</div>
+                            <div class="cn">红玫瑰在杆子上。</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
@@ -627,12 +897,25 @@
 
                 <div class="day-card" data-day="8">
                     <div class="day-header">
-                        <div class="day-title">Day 14: 阶段测试</div>
+                        <div class="day-title">Day 14: 阶段测试 + 错词复习</div>
                         <div class="day-status">
                             <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
                         </div>
                     </div>
                     <p style="margin: 10px 0; color: #666;">测试Week 1-2所有单词（约80个），目标正确率70%以上</p>
+
+                    <div class="difficult-words-section">
+                        <h4>🔄 本周错词滚动复习</h4>
+                        <p style="color: #666; font-size: 0.9em; margin: 10px 0;">
+                            重点复习本周标记的难词，确保每个词都能正确拼写。建议：
+                        </p>
+                        <ul style="color: #666; font-size: 0.9em; margin-left: 20px; line-height: 1.8;">
+                            <li>每个难词默写3遍</li>
+                            <li>用难词造句并默写</li>
+                            <li>家长随机抽查难词</li>
+                        </ul>
+                    </div>
+
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="测试结果：正确率___%，总计___/80个，需要加强的单词：___" rows="3"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存测试结果</button>
@@ -667,6 +950,24 @@
                         <span class="word-item" onclick="toggleWord(this)">tube</span>
                         <span class="word-item" onclick="toggleWord(this)">tune</span>
                     </div>
+
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div>The <strong>cute</strong> dog is playing with a <strong>cube</strong>.</div>
+                            <div class="cn">可爱的狗在玩一个方块。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div>It is a <strong>huge</strong> <strong>tube</strong> in <strong>June</strong>.</div>
+                            <div class="cn">六月有一个巨大的管子。</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
@@ -690,6 +991,24 @@
                         <span class="word-item" onclick="toggleWord(this)">chief</span>
                         <span class="word-item" onclick="toggleWord(this)">piece</span>
                     </div>
+
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div>Come <strong>here</strong> and look at <strong>these</strong> flowers.</div>
+                            <div class="cn">来这里看看这些花。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div>The <strong>chief</strong> found a <strong>piece</strong> of cake in the <strong>field</strong>.</div>
+                            <div class="cn">首领在田野里发现了一块蛋糕。</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
@@ -725,6 +1044,40 @@
                         <span class="word-item" onclick="toggleWord(this)">he</span>
                         <span class="word-item" onclick="toggleWord(this)">was</span>
                     </div>
+
+                    <div class="sentences-section">
+                        <h4>📝 例句练习（整句默写）</h4>
+                        <div class="sentence-item">
+                            <div><strong>I</strong> <strong>can</strong> <strong>see</strong> <strong>the</strong> cat <strong>in</strong> <strong>the</strong> box.</div>
+                            <div class="cn">我能看到盒子里的猫。</div>
+                        </div>
+                        <div class="sentence-item">
+                            <div><strong>He</strong> <strong>said</strong> <strong>we</strong> <strong>can</strong> <strong>go</strong> <strong>up</strong> <strong>and</strong> <strong>look</strong>.</div>
+                            <div class="cn">他说我们可以上去看看。</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn mark-difficult" onclick="markDifficultWords(this)">标记难词</button>
+                        <button class="action-btn clear-difficult" onclick="clearDifficultWords(this)">清除标记</button>
+                    </div>
+
+                    <div class="notes-area">
+                        <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
+                        <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
+                    </div>
+                </div>
+                        <span class="word-item" onclick="toggleWord(this)">up</span>
+                        <span class="word-item" onclick="toggleWord(this)">look</span>
+                        <span class="word-item" onclick="toggleWord(this)">is</span>
+                        <span class="word-item" onclick="toggleWord(this)">go</span>
+                        <span class="word-item" onclick="toggleWord(this)">we</span>
+                        <span class="word-item" onclick="toggleWord(this)">can</span>
+                        <span class="word-item" onclick="toggleWord(this)">see</span>
+                        <span class="word-item" onclick="toggleWord(this)">not</span>
+                        <span class="word-item" onclick="toggleWord(this)">he</span>
+                        <span class="word-item" onclick="toggleWord(this)">was</span>
+                    </div>
                     <div class="notes-area">
                         <textarea class="notes-input" placeholder="记录学习笔记..." rows="2"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存笔记</button>
@@ -738,9 +1091,14 @@
                             <button class="status-btn pending" onclick="toggleStatus(this)">未开始</button>
                         </div>
                     </div>
-                    <p style="margin: 10px 0; color: #666;">测试Day 15-20所有单词</p>
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #ffc107;">
+                        <h4 style="margin: 0 0 10px 0; color: #856404;">📋 本周复习重点</h4>
+                        <p style="margin: 5px 0; color: #856404;">1. 重点复习"错词本"中标记的难词</p>
+                        <p style="margin: 5px 0; color: #856404;">2. 测试Day 15-20所有单词（约40个）</p>
+                        <p style="margin: 5px 0; color: #856404;">3. 将本周新增的难词添加到错词本</p>
+                    </div>
                     <div class="notes-area">
-                        <textarea class="notes-input" placeholder="测试结果..." rows="3"></textarea>
+                        <textarea class="notes-input" placeholder="测试结果：正确率___%，总计___/40个，需要加强的单词：___" rows="3"></textarea>
                         <button class="save-btn" onclick="saveNotes(this)">保存测试结果</button>
                     </div>
                 </div>
@@ -775,6 +1133,9 @@
                     if (data.masteredWords && data.masteredWords.includes(text)) {
                         word.classList.add('mastered');
                     }
+                    if (data.difficultWords && data.difficultWords.includes(text)) {
+                        word.classList.add('difficult');
+                    }
                 });
 
                 // 恢复天数状态
@@ -796,6 +1157,7 @@
                 });
 
                 updateStats();
+                updateDifficultWordsSummary();
             }
         }
 
@@ -803,6 +1165,7 @@
         function saveProgress() {
             const data = {
                 masteredWords: [],
+                difficultWords: [],
                 dayStatus: {},
                 notes: {}
             };
@@ -810,6 +1173,11 @@
             // 保存单词状态
             document.querySelectorAll('.word-item.mastered').forEach(word => {
                 data.masteredWords.push(word.textContent);
+            });
+
+            // 保存难词
+            document.querySelectorAll('.word-item.difficult').forEach(word => {
+                data.difficultWords.push(word.textContent);
             });
 
             // 保存天数状态
@@ -833,8 +1201,70 @@
         // 切换单词掌握状态
         function toggleWord(element) {
             element.classList.toggle('mastered');
+            // 如果标记为已掌握，自动移除难词标记
+            if (element.classList.contains('mastered')) {
+                element.classList.remove('difficult');
+            }
             saveProgress();
             updateStats();
+            updateDifficultWordsSummary();
+        }
+
+        // 标记难词（将当前卡片中未掌握的单词标记为难词）
+        function markDifficultWords(button) {
+            const card = button.closest('.day-card');
+            const words = card.querySelectorAll('.word-item');
+            let count = 0;
+
+            words.forEach(word => {
+                if (!word.classList.contains('mastered')) {
+                    word.classList.add('difficult');
+                    count++;
+                }
+            });
+
+            saveProgress();
+            updateDifficultWordsSummary();
+
+            button.textContent = count > 0 ? `已标记 ${count} 个难词 ✓` : '无需标记';
+            setTimeout(() => {
+                button.textContent = '标记难词';
+            }, 2000);
+        }
+
+        // 清除难词标记
+        function clearDifficultWords(button) {
+            const card = button.closest('.day-card');
+            const words = card.querySelectorAll('.word-item.difficult');
+
+            words.forEach(word => {
+                word.classList.remove('difficult');
+            });
+
+            saveProgress();
+            updateDifficultWordsSummary();
+
+            button.textContent = '已清除 ✓';
+            setTimeout(() => {
+                button.textContent = '清除标记';
+            }, 2000);
+        }
+
+        // 更新错词本汇总
+        function updateDifficultWordsSummary() {
+            const summary = document.getElementById('difficultWordsSummary');
+            const difficultWords = document.querySelectorAll('.word-item.difficult');
+
+            if (difficultWords.length === 0) {
+                summary.innerHTML = '<span style="color: #999; font-size: 0.9em;">暂无标记的难词，点击下方"标记难词"按钮添加</span>';
+            } else {
+                const uniqueWords = new Set();
+                difficultWords.forEach(word => uniqueWords.add(word.textContent));
+
+                summary.innerHTML = Array.from(uniqueWords).map(word =>
+                    `<span class="word-item difficult" style="cursor: default;">${word}</span>`
+                ).join('');
+            }
         }
 
         // 切换学习状态
