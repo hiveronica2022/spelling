@@ -600,8 +600,14 @@
         <!-- 错词本汇总 -->
         <div style="padding: 15px; background: #fff3e0; margin: 0;">
             <div style="max-width: 1200px; margin: 0 auto;">
-                <h3 style="color: #ff9800; margin-bottom: 10px; font-size: 1.1em;">📚 错词本（需要加强的单词）</h3>
-                <div id="difficultWordsSummary" style="display: flex; flex-wrap: wrap; gap: 8px; min-height: 40px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; cursor: pointer;" onclick="toggleDifficultWords()">
+                    <h3 style="color: #ff9800; margin: 0; font-size: 1.1em;">📚 错词本（需要加强的单词）</h3>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span id="difficultWordsCount" style="background: #ff9800; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.9em; font-weight: bold;">0个</span>
+                        <span id="toggleIcon" style="color: #ff9800; font-size: 1.2em;">▼</span>
+                    </div>
+                </div>
+                <div id="difficultWordsSummary" style="display: none; flex-wrap: wrap; gap: 8px; min-height: 40px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ffe0b2;">
                     <span style="color: #999; font-size: 0.9em;">暂无标记的难词，点击下方"标记难词"按钮添加</span>
                 </div>
                 <div style="margin-top: 10px; font-size: 0.85em; color: #666;">
@@ -1253,17 +1259,40 @@
         // 更新错词本汇总
         function updateDifficultWordsSummary() {
             const summary = document.getElementById('difficultWordsSummary');
+            const countBadge = document.getElementById('difficultWordsCount');
             const difficultWords = document.querySelectorAll('.word-item.difficult');
 
-            if (difficultWords.length === 0) {
+            // 只统计难词（排除已掌握的词）
+            const actualDifficultWords = Array.from(difficultWords).filter(word =>
+                !word.classList.contains('mastered')
+            );
+
+            const count = actualDifficultWords.length;
+            countBadge.textContent = count + '个';
+
+            if (count === 0) {
                 summary.innerHTML = '<span style="color: #999; font-size: 0.9em;">暂无标记的难词，点击下方"标记难词"按钮添加</span>';
             } else {
                 const uniqueWords = new Set();
-                difficultWords.forEach(word => uniqueWords.add(word.textContent));
+                actualDifficultWords.forEach(word => uniqueWords.add(word.textContent));
 
                 summary.innerHTML = Array.from(uniqueWords).map(word =>
-                    `<span class="word-item difficult" style="cursor: default;">${word}</span>`
+                    `<span class="word-item difficult" style="cursor: default; pointer-events: none;">${word}</span>`
                 ).join('');
+            }
+        }
+
+        // 切换错词本显示/隐藏
+        function toggleDifficultWords() {
+            const summary = document.getElementById('difficultWordsSummary');
+            const icon = document.getElementById('toggleIcon');
+
+            if (summary.style.display === 'none' || summary.style.display === '') {
+                summary.style.display = 'flex';
+                icon.textContent = '▲';
+            } else {
+                summary.style.display = 'none';
+                icon.textContent = '▼';
             }
         }
 
