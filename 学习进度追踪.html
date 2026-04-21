@@ -584,8 +584,8 @@
                 <p>已掌握单词</p>
             </div>
             <div class="stat-card">
-                <h3 id="accuracy">0%</h3>
-                <p>平均正确率</p>
+                <h3 id="learningProgress">0/400</h3>
+                <p>学习进度</p>
             </div>
             <div class="stat-card">
                 <h3 id="streak">0</h3>
@@ -1351,8 +1351,8 @@
             document.getElementById('overallProgress').style.width = progress + '%';
             document.getElementById('overallProgress').textContent = progress + '%';
 
-            // 更新平均正确率（掌握率）
-            document.getElementById('accuracy').textContent = progress + '%';
+            // 更新学习进度（已掌握/总目标）
+            document.getElementById('learningProgress').textContent = masteredWords + '/' + totalWords;
 
             // 计算连续学习天数（简化版）
             let streak = 0;
