@@ -1351,6 +1351,9 @@
             document.getElementById('overallProgress').style.width = progress + '%';
             document.getElementById('overallProgress').textContent = progress + '%';
 
+            // 更新平均正确率（掌握率）
+            document.getElementById('accuracy').textContent = progress + '%';
+
             // 计算连续学习天数（简化版）
             let streak = 0;
             document.querySelectorAll('.day-card').forEach(card => {
