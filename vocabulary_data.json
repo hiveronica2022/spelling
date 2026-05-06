@@ -1,0 +1,280 @@
+{
+  "weeks": [
+    {
+      "week": 1,
+      "title": "Week 1: 简单Phonics + 基础Sight Words",
+      "days": [
+        {
+          "day": 1,
+          "title": "Day 1",
+          "words": [
+            {"word": "cake", "meaning": "蛋糕", "type": "phonics", "phonics": "c-a-ke"},
+            {"word": "make", "meaning": "制作", "type": "phonics", "phonics": "m-a-ke"},
+            {"word": "take", "meaning": "拿取", "type": "phonics", "phonics": "t-a-ke"},
+            {"word": "name", "meaning": "名字", "type": "phonics", "phonics": "n-a-me"},
+            {"word": "game", "meaning": "游戏", "type": "phonics", "phonics": "g-a-me"},
+            {"word": "the", "meaning": "这个/那个", "type": "sight"},
+            {"word": "a", "meaning": "一个", "type": "sight"},
+            {"word": "I", "meaning": "我", "type": "sight"},
+            {"word": "to", "meaning": "到/去", "type": "sight"},
+            {"word": "and", "meaning": "和", "type": "sight"}
+          ],
+          "sentences": [
+            "I can make a cake.",
+            "Take the game to me.",
+            "My name and your name."
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2",
+          "words": [
+            {"word": "lake", "meaning": "湖", "type": "phonics", "phonics": "l-a-ke"},
+            {"word": "bake", "meaning": "烘烤", "type": "phonics", "phonics": "b-a-ke"},
+            {"word": "gate", "meaning": "大门", "type": "phonics", "phonics": "g-a-te"},
+            {"word": "late", "meaning": "迟到", "type": "phonics", "phonics": "l-a-te"},
+            {"word": "safe", "meaning": "安全的", "type": "phonics", "phonics": "s-a-fe"},
+            {"word": "you", "meaning": "你", "type": "sight"},
+            {"word": "it", "meaning": "它", "type": "sight"},
+            {"word": "in", "meaning": "在...里面", "type": "sight"},
+            {"word": "is", "meaning": "是", "type": "sight"},
+            {"word": "go", "meaning": "去", "type": "sight"}
+          ],
+          "sentences": [
+            "You go to the lake.",
+            "It is safe in here.",
+            "Don't be late for the gate."
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3",
+          "words": [
+            {"word": "cave", "meaning": "洞穴", "type": "phonics", "phonics": "c-a-ve"},
+            {"word": "wave", "meaning": "波浪", "type": "phonics", "phonics": "w-a-ve"},
+            {"word": "face", "meaning": "脸", "type": "phonics", "phonics": "f-a-ce"},
+            {"word": "place", "meaning": "地方", "type": "phonics", "phonics": "pl-a-ce"},
+            {"word": "race", "meaning": "比赛", "type": "phonics", "phonics": "r-a-ce"},
+            {"word": "we", "meaning": "我们", "type": "sight"},
+            {"word": "see", "meaning": "看见", "type": "sight"},
+            {"word": "can", "meaning": "能够", "type": "sight"},
+            {"word": "he", "meaning": "他", "type": "sight"},
+            {"word": "on", "meaning": "在...上面", "type": "sight"}
+          ],
+          "sentences": [
+            "We can see the cave.",
+            "He is on the wave.",
+            "Wash your face in this place."
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Day 4",
+          "words": [
+            {"word": "bike", "meaning": "自行车", "type": "phonics", "phonics": "b-i-ke"},
+            {"word": "like", "meaning": "喜欢", "type": "phonics", "phonics": "l-i-ke"},
+            {"word": "kite", "meaning": "风筝", "type": "phonics", "phonics": "k-i-te"},
+            {"word": "time", "meaning": "时间", "type": "phonics", "phonics": "t-i-me"},
+            {"word": "five", "meaning": "五", "type": "phonics", "phonics": "f-i-ve"},
+            {"word": "up", "meaning": "向上", "type": "sight"},
+            {"word": "look", "meaning": "看", "type": "sight"},
+            {"word": "was", "meaning": "是(过去式)", "type": "sight"},
+            {"word": "said", "meaning": "说(过去式)", "type": "sight"},
+            {"word": "for", "meaning": "为了", "type": "sight"}
+          ],
+          "sentences": [
+            "I like the bike.",
+            "Look up at the kite.",
+            "He said it was time for five."
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Day 5",
+          "words": [
+            {"word": "nine", "meaning": "九", "type": "phonics", "phonics": "n-i-ne"},
+            {"word": "line", "meaning": "线", "type": "phonics", "phonics": "l-i-ne"},
+            {"word": "fine", "meaning": "好的", "type": "phonics", "phonics": "f-i-ne"},
+            {"word": "mine", "meaning": "我的", "type": "phonics", "phonics": "m-i-ne"},
+            {"word": "shine", "meaning": "闪耀", "type": "phonics", "phonics": "sh-i-ne"},
+            {"word": "they", "meaning": "他们", "type": "sight"},
+            {"word": "but", "meaning": "但是", "type": "sight"},
+            {"word": "at", "meaning": "在", "type": "sight"},
+            {"word": "with", "meaning": "和...一起", "type": "sight"},
+            {"word": "all", "meaning": "全部", "type": "sight"}
+          ],
+          "sentences": [
+            "They are all fine.",
+            "It is mine, but you can take it.",
+            "The sun shine at nine."
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Day 6",
+          "words": [
+            {"word": "hide", "meaning": "躲藏", "type": "phonics", "phonics": "h-i-de"},
+            {"word": "ride", "meaning": "骑", "type": "phonics", "phonics": "r-i-de"},
+            {"word": "side", "meaning": "边", "type": "phonics", "phonics": "s-i-de"},
+            {"word": "wide", "meaning": "宽的", "type": "phonics", "phonics": "w-i-de"},
+            {"word": "smile", "meaning": "微笑", "type": "phonics", "phonics": "sm-i-le"},
+            {"word": "there", "meaning": "那里", "type": "sight"},
+            {"word": "out", "meaning": "外面", "type": "sight"},
+            {"word": "be", "meaning": "是", "type": "sight"},
+            {"word": "have", "meaning": "有", "type": "sight"},
+            {"word": "am", "meaning": "是(I am)", "type": "sight"}
+          ],
+          "sentences": [
+            "I am there with the bike.",
+            "We have a wide smile.",
+            "Hide out and ride to the side."
+          ]
+        },
+        {
+          "day": 7,
+          "title": "Day 7: 周复习",
+          "isReview": true,
+          "reviewNote": "本周学习了30个phonics词和30个sight words，共60个词"
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "title": "Week 2: 中等Phonics + 进阶Sight Words",
+      "days": [
+        {
+          "day": 8,
+          "title": "Day 8",
+          "words": [
+            {"word": "home", "meaning": "家", "type": "phonics", "phonics": "h-o-me"},
+            {"word": "hope", "meaning": "希望", "type": "phonics", "phonics": "h-o-pe"},
+            {"word": "note", "meaning": "笔记", "type": "phonics", "phonics": "n-o-te"},
+            {"word": "bone", "meaning": "骨头", "type": "phonics", "phonics": "b-o-ne"},
+            {"word": "cone", "meaning": "圆锥", "type": "phonics", "phonics": "c-o-ne"},
+            {"word": "do", "meaning": "做", "type": "sight"},
+            {"word": "did", "meaning": "做(过去式)", "type": "sight"},
+            {"word": "what", "meaning": "什么", "type": "sight"},
+            {"word": "so", "meaning": "所以", "type": "sight"},
+            {"word": "get", "meaning": "得到", "type": "sight"}
+          ],
+          "sentences": [
+            "I go home with you.",
+            "What did you do?",
+            "Get the note, so we can see."
+          ]
+        },
+        {
+          "day": 9,
+          "title": "Day 9",
+          "words": [
+            {"word": "rope", "meaning": "绳子", "type": "phonics", "phonics": "r-o-pe"},
+            {"word": "nose", "meaning": "鼻子", "type": "phonics", "phonics": "n-o-se"},
+            {"word": "rose", "meaning": "玫瑰", "type": "phonics", "phonics": "r-o-se"},
+            {"word": "hole", "meaning": "洞", "type": "phonics", "phonics": "h-o-le"},
+            {"word": "pole", "meaning": "杆子", "type": "phonics", "phonics": "p-o-le"},
+            {"word": "this", "meaning": "这个", "type": "sight"},
+            {"word": "will", "meaning": "将要", "type": "sight"},
+            {"word": "yes", "meaning": "是的", "type": "sight"},
+            {"word": "went", "meaning": "去(过去式)", "type": "sight"},
+            {"word": "are", "meaning": "是(复数)", "type": "sight"}
+          ],
+          "sentences": [
+            "This rope is in the hole.",
+            "Yes, I will get the rose.",
+            "They went home and are there."
+          ]
+        },
+        {
+          "day": 10,
+          "title": "Day 10",
+          "words": [
+            {"word": "stone", "meaning": "石头", "type": "phonics", "phonics": "st-o-ne"},
+            {"word": "phone", "meaning": "电话", "type": "phonics", "phonics": "ph-o-ne"},
+            {"word": "close", "meaning": "关闭", "type": "phonics", "phonics": "cl-o-se"},
+            {"word": "those", "meaning": "那些", "type": "phonics", "phonics": "th-o-se"},
+            {"word": "smoke", "meaning": "烟", "type": "phonics", "phonics": "sm-o-ke"},
+            {"word": "now", "meaning": "现在", "type": "sight"},
+            {"word": "no", "meaning": "不", "type": "sight"},
+            {"word": "came", "meaning": "来(过去式)", "type": "sight"},
+            {"word": "into", "meaning": "进入", "type": "sight"},
+            {"word": "good", "meaning": "好的", "type": "sight"}
+          ],
+          "sentences": [
+            "Close the phone now.",
+            "No, those are not good stone.",
+            "He came into the home with smoke."
+          ]
+        },
+        {
+          "day": 11,
+          "title": "Day 11",
+          "words": [
+            {"word": "cute", "meaning": "可爱的", "type": "phonics", "phonics": "c-u-te"},
+            {"word": "use", "meaning": "使用", "type": "phonics", "phonics": "u-se"},
+            {"word": "tube", "meaning": "管子", "type": "phonics", "phonics": "t-u-be"},
+            {"word": "cube", "meaning": "立方体", "type": "phonics", "phonics": "c-u-be"},
+            {"word": "mule", "meaning": "骡子", "type": "phonics", "phonics": "m-u-le"},
+            {"word": "want", "meaning": "想要", "type": "sight"},
+            {"word": "too", "meaning": "也/太", "type": "sight"},
+            {"word": "pretty", "meaning": "漂亮的", "type": "sight"},
+            {"word": "four", "meaning": "四", "type": "sight"},
+            {"word": "saw", "meaning": "看见(过去式)", "type": "sight"}
+          ],
+          "sentences": [
+            "I want the cute mule.",
+            "Use this tube, it is too good.",
+            "We saw four pretty cube."
+          ]
+        },
+        {
+          "day": 12,
+          "title": "Day 12",
+          "words": [
+            {"word": "huge", "meaning": "巨大的", "type": "phonics", "phonics": "h-u-ge"},
+            {"word": "rule", "meaning": "规则", "type": "phonics", "phonics": "r-u-le"},
+            {"word": "rude", "meaning": "粗鲁的", "type": "phonics", "phonics": "r-u-de"},
+            {"word": "tune", "meaning": "曲调", "type": "phonics", "phonics": "t-u-ne"},
+            {"word": "fume", "meaning": "烟雾", "type": "phonics", "phonics": "f-u-me"},
+            {"word": "well", "meaning": "好/井", "type": "sight"},
+            {"word": "ran", "meaning": "跑(过去式)", "type": "sight"},
+            {"word": "brown", "meaning": "棕色", "type": "sight"},
+            {"word": "eat", "meaning": "吃", "type": "sight"},
+            {"word": "who", "meaning": "谁", "type": "sight"}
+          ],
+          "sentences": [
+            "Who ran into the huge hole?",
+            "Eat well and use the rule.",
+            "The brown fume is not good."
+          ]
+        },
+        {
+          "day": 13,
+          "title": "Day 13",
+          "words": [
+            {"word": "dune", "meaning": "沙丘", "type": "phonics", "phonics": "d-u-ne"},
+            {"word": "flute", "meaning": "长笛", "type": "phonics", "phonics": "fl-u-te"},
+            {"word": "prune", "meaning": "梅干", "type": "phonics", "phonics": "pr-u-ne"},
+            {"word": "duke", "meaning": "公爵", "type": "phonics", "phonics": "d-u-ke"},
+            {"word": "fuse", "meaning": "保险丝", "type": "phonics", "phonics": "f-u-se"},
+            {"word": "new", "meaning": "新的", "type": "sight"},
+            {"word": "must", "meaning": "必须", "type": "sight"},
+            {"word": "black", "meaning": "黑色", "type": "sight"},
+            {"word": "white", "meaning": "白色", "type": "sight"},
+            {"word": "down", "meaning": "向下", "type": "sight"}
+          ],
+          "sentences": [
+            "The new flute is black and white.",
+            "You must go down to the dune.",
+            "Who will use the fuse?"
+          ]
+        },
+        {
+          "day": 14,
+          "title": "Day 14: 周复习",
+          "isReview": true,
+          "reviewNote": "本周学习了30个phonics词和30个sight words，共60个词"
+        }
+      ]
+    }
+  ]
+}

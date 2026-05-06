@@ -1832,5 +1832,217 @@
             updateStats();
         };
     </script>
+
+    <!-- 引入句子生成器 -->
+    <script src="sentence_generator.js"></script>
+
+    <script>
+        // ========== 周复习和错词自动组句功能 ==========
+
+        // 获取当前周的所有错词
+        function getWeeklyErrorWords(weekNum) {
+            const errorWords = [];
+            const weekSection = document.getElementById('week' + weekNum);
+            if (!weekSection) return errorWords;
+
+            const difficultWords = weekSection.querySelectorAll('.word-item.difficult');
+            difficultWords.forEach(wordElement => {
+                const wordText = wordElement.textContent.trim();
+                const meaningElement = wordElement.nextElementSibling;
+                const meaning = meaningElement ? meaningElement.textContent.replace(' - ', '') : '';
+
+                errorWords.push({
+                    word: wordText,
+                    meaning: meaning,
+                    week: weekNum
+                });
+            });
+
+            return errorWords;
+        }
+
+        // 显示周复习界面
+        function showWeeklyReview(weekNum) {
+            const errorWords = getWeeklyErrorWords(weekNum);
+
+            if (errorWords.length === 0) {
+                alert('本周暂无标记的错词！');
+                return;
+            }
+
+            // 生成复习句子
+            const sentences = generateSentencesFromErrors(errorWords, weekNum);
+
+            // 创建复习界面
+            const reviewHTML = `
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="this.remove()">
+                    <div style="background: white; border-radius: 15px; padding: 30px; max-width: 600px; max-height: 80vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                        <h2 style="color: #667eea; margin-bottom: 20px;">📝 Week ${weekNum} 错词复习</h2>
+
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                            <h3 style="font-size: 1em; margin-bottom: 10px;">本周错词 (${errorWords.length}个):</h3>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                ${errorWords.map(w => `<span style="background: #fff; padding: 5px 10px; border-radius: 5px; border: 2px solid #ff6b6b;">${w.word}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <h3 style="font-size: 1.1em; margin-bottom: 15px; color: #333;">🎯 复习句子 (${sentences.length}个):</h3>
+
+                        ${sentences.map((s, idx) => `
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #667eea;">
+                                <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 8px; color: #333;">
+                                    ${idx + 1}. ${s.sentence}
+                                </div>
+                                <div style="color: #666; font-size: 0.95em; margin-bottom: 8px;">
+                                    ${s.translation}
+                                </div>
+                                <div style="font-size: 0.85em; color: #999;">
+                                    包含错词: ${s.usedErrorWords.map(w => `<span style="color: #ff6b6b; font-weight: bold;">${w}</span>`).join(', ')}
+                                </div>
+                            </div>
+                        `).join('')}
+
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                            <h3 style="font-size: 1em; margin-bottom: 10px; color: #333;">💡 复习建议:</h3>
+                            <ul style="color: #666; font-size: 0.9em; line-height: 1.8; padding-left: 20px;">
+                                <li>朗读每个句子3遍</li>
+                                <li>遮住英文，看中文默写</li>
+                                <li>让家长读中文，你写英文</li>
+                                <li>重点记忆标红的错词</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="this.closest('div[style*=fixed]').remove()" style="width: 100%; padding: 15px; background: #667eea; color: white; border: none; border-radius: 10px; font-size: 1em; cursor: pointer; margin-top: 20px;">
+                            关闭
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', reviewHTML);
+        }
+
+        // 在每个周的标签页添加"周复习"按钮
+        function addWeeklyReviewButtons() {
+            const weekSections = document.querySelectorAll('.week-section');
+            weekSections.forEach((section, index) => {
+                const weekNum = index + 1;
+                const firstCard = section.querySelector('.day-card');
+
+                if (firstCard && !section.querySelector('.weekly-review-btn')) {
+                    const reviewButton = document.createElement('button');
+                    reviewButton.className = 'weekly-review-btn';
+                    reviewButton.textContent = '📝 Week ' + weekNum + ' 错词复习';
+                    reviewButton.style.cssText = `
+                        width: 100%;
+                        padding: 15px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border: none;
+                        border-radius: 10px;
+                        font-size: 1em;
+                        font-weight: bold;
+                        cursor: pointer;
+                        margin-bottom: 20px;
+                        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+                        transition: all 0.3s;
+                    `;
+                    reviewButton.onclick = () => showWeeklyReview(weekNum);
+
+                    // 添加hover效果
+                    reviewButton.onmouseover = () => {
+                        reviewButton.style.transform = 'translateY(-2px)';
+                        reviewButton.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
+                    };
+                    reviewButton.onmouseout = () => {
+                        reviewButton.style.transform = 'translateY(0)';
+                        reviewButton.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
+                    };
+
+                    section.insertBefore(reviewButton, firstCard);
+                }
+            });
+        }
+
+        // 页面加载完成后添加按钮
+        window.addEventListener('load', () => {
+            setTimeout(addWeeklyReviewButtons, 500);
+        });
+
+        // 导出错词本为文本
+        function exportErrorWords() {
+            const allErrorWords = [];
+
+            for (let week = 1; week <= 8; week++) {
+                const weekErrors = getWeeklyErrorWords(week);
+                if (weekErrors.length > 0) {
+                    allErrorWords.push({
+                        week: week,
+                        words: weekErrors
+                    });
+                }
+            }
+
+            if (allErrorWords.length === 0) {
+                alert('暂无错词记录！');
+                return;
+            }
+
+            let exportText = '英语单词错词本\n';
+            exportText += '生成时间: ' + new Date().toLocaleString() + '\n';
+            exportText += '='.repeat(50) + '\n\n';
+
+            allErrorWords.forEach(weekData => {
+                exportText += `Week ${weekData.week} (${weekData.words.length}个错词)\n`;
+                exportText += '-'.repeat(50) + '\n';
+                weekData.words.forEach((w, idx) => {
+                    exportText += `${idx + 1}. ${w.word} - ${w.meaning}\n`;
+                });
+                exportText += '\n';
+            });
+
+            // 创建下载
+            const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '错词本_' + new Date().toISOString().slice(0, 10) + '.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // 添加导出按钮到错词本区域
+        function addExportButton() {
+            const difficultWordsSection = document.querySelector('.difficult-words-section');
+            if (difficultWordsSection && !document.getElementById('exportErrorWordsBtn')) {
+                const exportBtn = document.createElement('button');
+                exportBtn.id = 'exportErrorWordsBtn';
+                exportBtn.textContent = '📥 导出错词本';
+                exportBtn.style.cssText = `
+                    padding: 10px 20px;
+                    background: #28a745;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 0.9em;
+                    margin-left: 10px;
+                `;
+                exportBtn.onclick = exportErrorWords;
+
+                const header = difficultWordsSection.querySelector('h2');
+                if (header) {
+                    header.style.display = 'flex';
+                    header.style.alignItems = 'center';
+                    header.style.justifyContent = 'space-between';
+                    header.appendChild(exportBtn);
+                }
+            }
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(addExportButton, 500);
+        });
+    </script>
 </body>
 </html>
